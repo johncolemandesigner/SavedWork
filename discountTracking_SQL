@@ -1,0 +1,18 @@
+SELECT
+  O.OrderStatus AS [Order Status],
+  O.OrderDate AS [Order Date],
+  O.OrderID AS [Order ID],
+  OD.ProductCode AS [Product Code],
+  OD.ProductName AS [Product Name],
+  ABS(OD.TotalPrice) AS [Discount Amount],
+  OD.CouponCode,
+  OD.DiscountValue
+  
+  FROM Discounts AS D, Orders AS O INNER Join OrderDetails AS OD ON O.OrderID = OD.OrderID
+  
+  WHERE (O.OrderDate BETWEEN '10/01/2017 00:00:00 AM' AND '12/31/2017 11:59:59 PM') AND OD.CouponCode IN('EMPLOYEEDISCOUNT', 'employeefreeshipping', 'VIP10', 'VIP15', 'Family10', 'A15VIP', 'FACEBOOK10', 'AVIP15', 'A5CCC', 'A10CCC', 'A15CCC', 'A20CCC', 'A25CCC', 'A30CCC', 'A50CCC', 'MDAY10', '10-Jul', 'LDAY10', 'AMDAY10', ''AJuly10', 'ALDAY10', 'AVIP10', 'AFACEBOOK5', '15VIP', 'SUMMER15', 'XMAS10', 'XAMAS15', 'CYBER15', 'FINAL10', 'TREEBAG10', 'AXMAS10', 'AXMAS15', 'ACYBER15', 'AFINAL10', 'APGTEAM', 'CHRISTMAS20')) AND (O.OrderStatus = 
+  'Shipped')
+  
+  GROUP BY O.OrderStatus, O.OrderDate, O.OrderID, OD.ProductCode, OD.ProductName, OD.TotalPrice, OD.CouponCode, OD.DiscountValue
+  
+  ORDER BY O.OrderDate, O.OrderID
