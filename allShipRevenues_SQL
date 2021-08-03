@@ -1,0 +1,45 @@
+SET @startdate = '01/01/2017 00:00:00 AM' /* Update Start Date Here */
+SET @enddate = '12/31/2017 11:59:59 PM' /* Update End Date Here */
+
+SELECT
+  CASE
+    WHEN (O.ShippingMethodID = '501') THEN 'FedEx Ground 4 lbs - 150 lbs'
+    WHEN (O.ShippingMethodID = '502') THEN 'FedEx Home Delivery 4 lbs - 150 lbs'
+    WHEN (O.ShippingMethodID = '505') THEN 'FedEx Standard Overnight'
+    WHEN (O.ShippingMethodID = '509') THEN 'International Economy'
+    WHEN (O.ShippingMethodID = '514') THEN 'FedEx 3 Day'
+    WHEN (O.ShippingMethodID = '516') THEN 'FedEx Express Saver 4 lbs - 150 lbs'
+    WHEN (O.ShippingMethodID = '805') THEN 'USPS First-Class Mail'
+    WHEN (O.ShippingMethodID = '813') THEN 'USPS Priority Mail'
+    WHEN (O.ShippingMethodID = '1000') THEN 'FedEx Home Delivery 0 lbs - 4 lbs'
+    WHEN (O.ShippingMethodID = '1002') THEN 'FedEx Ground 0 lbs - 4 lbs'
+    WHEN (O.ShippingMethodID = '1016') THEN 'FedEx Express Saver 0 lbs - 4 lbs'
+    WHEN (O.ShippingMethodID = '60108') THEN 'Free Economy Shipping'
+  ELSE 'Undefined Shipping Method'
+  END AS [Shipping Method],
+  
+  SUM(OD.Quantity) AS [Total Shipped],
+  PJ.ProductWeight AS [Single Item Weight],
+  
+  CASE
+    WHEN (PJ.ProductWeight BETWEEN 0.0001 AND 0.79) THEN SUM(OD.Quantity * 2.70)
+    WHEN (PJ.ProductWeight BETWEEN 0.8 AND 5) THEN SUM(OD.Quantity * 12.75)
+    WHEN (PJ.ProductWeight BETWEEN 6 AND 10) THEN SUM(OD.Quantity * 14.00)
+    WHEN (PJ.ProductWeight BETWEEN 11 AND 17) THEN SUM(OD.Quantity * 15.25)
+    WHEN (PJ.ProductWeight BETWEEN 18 AND 36) THEN SUM(OD.Quantity * 21.50)
+    WHEN (PJ.ProductWeight BETWEEN 37 AND 70) THEN SUM(OD.Quantity * 25.50)
+    WHEN (PJ.ProductWeight BETWEEN 71 AND 100) THEN SUM(OD.Quantity * 43.00)
+    WHEN (PJ.ProductWeight BETWEEN 101 AND 130) THEN SUM(OD.Quantity * 70.00)
+    WHEN (PJ.ProductWeight BETWEEN 131 AND 160) THEN SUM(OD.Quantity * 94.00)
+  ELSE '0'
+  END AS [Added Revenuej]
+  
+  FROM Orders AS O JOIN OrderDetails AS OD ON O.OrderID = OD.OrderID JOIN Products_Joined AS PJ ON OD.ProductCode = PJ.ProductCode
+  
+  WHERE(O.OrderStatus = 'Shipped') AND (O.ShipDate BETWEEN @startdate AND @enddate) AND (O.ShippingMethod IN ('501', '502', '505', '509', '514', '516', '805', '1000', '1002', '1016)) AND (OD.ProductCode NOT LIKE 'DSC%') AND ((O.PaymentMethodID <> '31') OR (O.PaymentMethodID <> '1') OR O.PyamentMethodID <> '35') OR (O.PaymentMethodID <> '30'))
+  
+  GROUP BY OD.ProductCode, O.ShippingMethod, PJ.ProductWeight
+  
+  ORDER BY OD.ProductCode, O.ShippingMethodID
+    
+    
