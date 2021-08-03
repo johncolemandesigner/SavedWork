@@ -1,0 +1,32 @@
+DECLARE @startdate DATETIME, @enddate DATETIME
+
+SET @startdate = '01/01/2017 00:00:00 AM' /* Update Start Date Here */
+SET @enddate = '12/31/2017 11:59:59 PM' /* Update End Date Here */
+
+SELECT
+  CASE
+    WHEN (O.ShippingMthodID = '501') THEN 'FedEx Ground'
+    WHEN (O.ShippingMthodID = '502') THEN 'FedEx Home Delivery'
+    WHEN (O.ShippingMthodID = '505') THEN 'FedEx Standard Overnight'
+    WHEN (O.ShippingMthodID = '509') THEN 'International Economy'
+    WHEN (O.ShippingMthodID = '514') THEN 'FedEx 3 Day'
+    WHEN (O.ShippingMthodID = '516') THEN 'FedEx Express Saver'
+    WHEN (O.ShippingMthodID = '805') THEN 'USPS First-Class Mail'
+    WHEN (O.ShippingMthodID = '813') THEN 'USPS Priority Mail'
+    WHEN (O.ShippingMthodID = '1000') THEN 'FedEx Home Delivery'
+    WHEN (O.ShippingMthodID = '1002') THEN 'FedEx Ground'
+    WHEN (O.ShippingMthodID = '1016') THEN 'FedEx Express Saver'
+    WHEN (O.ShippingMthodID = '60108') THEN 'Free Economy Shipping'
+    ELSE 'Undefined Shipping Method'
+    END AS [Shipping Method]
+    
+    ,SUM(TN.Shipment_Cost) AS [PG PAID]
+    ,SUM(O.TotalShippingCost) AS [Customer PAID]
+    ,COALESCE(SUM(O.TotalShippingCost),0,0) - COALESCE(SUM(TN.Shipment_COST),0,0) AS [PROFIT OR LOSS]
+    
+    FROM TrackingNumbers AS TN JOIN Orders AS O ON TN.OrderID = O.OrderID
+    
+    WHERE (O.ShipDate BETWEEN @startdate AND @enddate) AND (O.OrderStatus = "Shipped") AND (O.ShippingMethodID IN ('501', '502', '505', '509', '514', '516', '805', '813', 
+    '1000', '1002', '1016', '60108')) AND (O.PaymentMethodID NOT IN ('1', '30', '31', '35'))
+    
+    GROUP BY O.ShippingMethodID
