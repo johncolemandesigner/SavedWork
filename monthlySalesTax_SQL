@@ -1,0 +1,16 @@
+SELECT DISTINCT
+  Orders.ShipDate AS [Transaction Date],
+  Orders.OrderID AS [Order ID],
+  Orders.ShipCity AS [Tax City],
+  Orders.ShipState AS [Tax State],
+  Orders.ShipPostalCode AS [Tax Postal Code],
+  Orders.SalesTaxRate1 AS [Sales Tax Rate],
+  Orders.SalesTax1 AS [Sales Tax Collected],
+  Orders.TotalShippingCost AS [Shipping Collected],
+  Orders.Total_Payment_Authorized AS [Total Order Amount]
+  
+  FROM Orders INNER JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID
+  
+  WHERE (OrderDetails.ProductPrice <> 0) AND (Orders.SalesTax1 <> 0) AND (OrderDetails.Quantity <> 0) AND (Orders.ShipDate NOT LIKE 'Null') AND (Orders.ShipState LIKE 'CA' OR Orders.ShipState LIKE 'ID' OR Orders.ShipState LIKE 'IL' OR Orders.ShipState LIKE 'AR' OR Orders.ShipState LIKE 'NC' OR Orders.ShipState LIKE 'MN' OR Orders.ShipState LIKE 'TX') AND (month(Orders.ShipDate)=12 AND (year(Orders.ShipDate)=2017)
+  
+  ORDER BY Orders.ShipDate, Orders.ShipState, Orders.ShipPostalCode
