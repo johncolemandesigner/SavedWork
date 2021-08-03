@@ -1,0 +1,24 @@
+DECLARE @startdate DATETIME, @enddate DATETIME
+
+SET @startdate = '01/01/2017 00:00:00 AM' /* Update Start Date Here */
+SET @enddate = '12/31/2017 11:59:59 PM' /* Update End Date Here */
+
+SELECT
+  O.OrderID
+  ,OD.ProductCode
+  ,OD.Quantity
+  ,O.OrderStatus
+  ,O.OrderDate
+  ,OD.RMA_Number
+,CASE
+  WHEN (PL.Pay_Result = 'DEBIT') THEN PL.Pay_Amount
+ END AS [Full Order Amount]
+,CASE
+  WHEN (PL.Pay_Result = 'CREDIT') THEN PL.Pay_Amount
+ END AS [Amount Refunded]
+ 
+ FROM Orders AS O INNER JOIN OrderDetails AS OD ON O.OrderID = OD.OrderID INNER JOIN Payment_Log AS PL ON O.OrderID = PL.Pay_orderID
+ 
+ WHERE (O.OrderStatus = 'Partially Returned') AND (O.OrderDate BETWEEN @startdate AND @enddate) AND (OD.RMA_Number > '0')
+ 
+ Order By O.OrderID
