@@ -1,0 +1,25 @@
+/* Full Refunds on Orders (RMA) */
+
+DECLARE @startdate DATETIME, @enddate DATETIME
+
+SET @startdate = '10/01/2017 00:00:00 AM' /* Update Start Date Here */
+SET @enddate = '12/31/20187 11:59:59 PM' /* Update End Date Here */
+
+SELECT
+  O.OrderID
+  ,OD.ProductCode
+  ,O.OrderStatus
+  ,O.OrderDate
+  
+,CASE
+  WHEN (O.Total_Payment_Received <= '0') THEN PL.Pay_Amount
+ELSE O.Total_Payment_Received
+END AS [Total Payment Returned]
+
+FROM Orders AS O INNER JOIN OrderDetails AS OD ON O.OrderID = OD.OrderID INNER JOIN Payment_Log AS PL On O.OrderID = PL.Pay_OrderID
+
+// be sure to not account for discount codes that were input as product codes by agent on order or you will have duplicate paybacks
+
+WHERE (O.OrderStatus = 'Returned') AND (OD.ProductCode NOT IN('DSC-1', 'DSC-12', 'DSC-13', 'DSC-15', 'DSC-16', DSC-17', 'DSC-DUSPS', 'DSC-DWH', 'DSC-999', 'DSC-88', 'DSC-OOS', 'DSC-CCC', 'SDC-OECA', 'DSC-OECW')) AND (O.OrderDate BETWEEN @startdate AND @enddate) AND (PL.Pay_Result = 'CREDIT')
+
+ORDER BY O.OrderID
