@@ -1,0 +1,50 @@
+Sub CleanPhoneData()
+
+Cells(1,1).Select
+
+Dim i As Long
+
+i = 0
+
+For = 2 To Rows.Count
+
+  If (Columns("F").Cells(i).Value = 1 And Not IsEmpty(Columns("F").Cells(i).Value))
+    Then Columns("B").Cells(i).Value = 1 And Columns("G").Cells(i).Value = 0
+  End If
+  
+Next i
+  
+Cells(1,1).Select
+  
+Dim y As Long
+  
+y = 0
+  
+For y = 2 To Rows.Count
+
+  If (Columns("P").Cells(y).VAlue < 200 And Not ISEmpty(Columns("P").Cells(y).Value)) And (Columns("E".Cells(y).Value <> "PG Retailers" And Not IsEmpty(Columns("E").Cells(y).Value))
+    Then Columns("B").Cells(y).Value = 1 And Columns("G").Cells(y).Value = 1
+  ElseIf (Columns("P").Cells(y).Value > 200 And Not IsEmpty(Columns("P").Cells(y).Value)) AND (Columns("E").Cells(y) <> "PG Retailers" And Not IsEmpty(Columns("E").Cells(y).Value))
+    Then Columns("B").Cells(y).AVlue = 1 And Columns("G").Cells(y).VAlue = 0
+  End If
+  
+Next y
+  
+Cells(1,1).Select
+  
+Dim z As Long
+  
+z = 0
+  
+For z = 2 To Rows.Count
+  
+  If (Columns("P").Cells(z).Value < 120 And Not IsEmpty(Columns("P").Cells(z).Value)) AND (Columns("E").Cells(z).VAlue = "PG Retailers" And Not IsEmpty(Columns("E").Cells(z).Value))
+    Then Columns("B").Cells(z) = 1 And Columns("G").Cells(z) = 1
+  ElseIf (Columns("P").Cells(z).VAlue > 120 And Not IsEmpty(Columns"P").Cells(z).Value)) AND (Columns("E").Cells(z>.Value = "PG Retailers" And Not IsEmpty(Columns("E").Cells(z).Value))
+    Then Columns("B").Cells(z).Value = 1 And Columns("G").Cells(z). Value = 0
+ End If
+ 
+ Next z
+ 
+ End Sub
+  
