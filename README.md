@@ -1,2 +1,2 @@
 # sampleWork
-This is samples of work I did for my previous employer.
+SQL, JS and VB examples of work done in previous employment.
