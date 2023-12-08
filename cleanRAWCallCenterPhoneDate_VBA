@@ -22,10 +22,10 @@ y = 0
   
 For y = 2 To Rows.Count
 
-  If (Columns("P").Cells(y).VAlue < 200 And Not ISEmpty(Columns("P").Cells(y).Value)) And (Columns("E".Cells(y).Value <> "PG Retailers" And Not IsEmpty(Columns("E").Cells(y).Value))
+  If (Columns("P").Cells(y).Value < 200 And Not ISEmpty(Columns("P").Cells(y).Value)) And (Columns("E".Cells(y).Value <> "PG Retailers" And Not IsEmpty(Columns("E").Cells(y).Value))
     Then Columns("B").Cells(y).Value = 1 And Columns("G").Cells(y).Value = 1
   ElseIf (Columns("P").Cells(y).Value > 200 And Not IsEmpty(Columns("P").Cells(y).Value)) AND (Columns("E").Cells(y) <> "PG Retailers" And Not IsEmpty(Columns("E").Cells(y).Value))
-    Then Columns("B").Cells(y).AVlue = 1 And Columns("G").Cells(y).VAlue = 0
+    Then Columns("B").Cells(y).Value = 1 And Columns("G").Cells(y).Value = 0
   End If
   
 Next y
@@ -40,7 +40,7 @@ For z = 2 To Rows.Count
   
   If (Columns("P").Cells(z).Value < 120 And Not IsEmpty(Columns("P").Cells(z).Value)) AND (Columns("E").Cells(z).VAlue = "PG Retailers" And Not IsEmpty(Columns("E").Cells(z).Value))
     Then Columns("B").Cells(z) = 1 And Columns("G").Cells(z) = 1
-  ElseIf (Columns("P").Cells(z).VAlue > 120 And Not IsEmpty(Columns"P").Cells(z).Value)) AND (Columns("E").Cells(z>.Value = "PG Retailers" And Not IsEmpty(Columns("E").Cells(z).Value))
+  ElseIf (Columns("P").Cells(z).Value > 120 And Not IsEmpty(Columns"P").Cells(z).Value)) AND (Columns("E").Cells(z>.Value = "PG Retailers" And Not IsEmpty(Columns("E").Cells(z).Value))
     Then Columns("B").Cells(z).Value = 1 And Columns("G").Cells(z). Value = 0
  End If
  
